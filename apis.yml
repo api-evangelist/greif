@@ -1,7 +1,11 @@
 aid: greif
-url: https://raw.githubusercontent.com/api-evangelist/greif/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/greif/refs/heads/main/apis.yml
 modified: '2026-03-24'
 apis: []
 common:
   - type: Website
     url: https://www.greif.com
+description: >-
+  Greif is an industrial packaging products and services leader with a vision to be
+  the best performing customer service company in the world.
