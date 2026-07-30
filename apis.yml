@@ -3,9 +3,20 @@ name: Greif
 description: >-
   Greif is an industrial packaging products and services leader with a vision to be the best performing customer service company in the world. Greif also offers digital tools such as the Greif Green Tool carbon footprint calculator and the Greif+ online platform for customers.
 type: Index
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/greif.png
 tags:
   - Packaging
   - Industrial
