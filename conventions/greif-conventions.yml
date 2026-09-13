@@ -1,0 +1,137 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  openapi/greif-wordpress-rest-openapi.yml, the verbatim route index at
+  openapi/greif-wp-json-discovery.json, and live response headers observed on
+  https://www.greif.com/wp-json/wp/v2/product and /wp/v2/posts (2026-09-12)
+subject: Greif WordPress REST API (https://www.greif.com/wp-json)
+scope_note: >-
+  Greif publishes no developer program and no first-party API documentation. Everything below was read
+  off the interface itself — the provider-served route-discovery document and observed response headers
+  — not off a docs page, because there is no docs page. The upstream semantics are those of the
+  WordPress REST API; the entities are Greif's own.
+authentication:
+  style: none-for-reads
+  detail: >-
+    Collection and item reads under wp/v2 are anonymous. Verified 200 on /wp/v2/product,
+    /wp/v2/product_category, /wp/v2/product_material, /wp/v2/product_capacity, /wp/v2/product_attribute,
+    /wp/v2/product_market, /wp/v2/regional_availability, /wp/v2/market, /wp/v2/technology,
+    /wp/v2/sustainability_items, /wp/v2/wpsl_stores, /wp/v2/store_location, /wp/v2/posts, /wp/v2/types,
+    /wp/v2/taxonomies and /wp/v2/search. Writes and privileged reads require a WordPress account —
+    application passwords over HTTP Basic, or a logged-in cookie plus an X-WP-Nonce header. Neither is
+    available to third parties; /wp/v2/settings and /wp/v2/users return 401 anonymously.
+  artifact: authentication/greif-authentication.yml
+idempotency:
+  coverage: none
+  supported: false
+  header: null
+  scope: []
+  detail: >-
+    No idempotency mechanism. The WordPress REST API defines no Idempotency-Key header and Greif adds
+    none; a repeated POST to /wp/v2/product would create a second record. Reads are naturally idempotent,
+    which is not replay protection. Note that the mutating surface is not open to third parties in the
+    first place — every write route requires a WordPress account on the Greif site.
+reversibility:
+  grade: documented
+  applies_to: authenticated write surface only (not reachable by third parties)
+  detail: >-
+    WordPress deletes are soft by default: DELETE on a post-type route moves the record to trash and it
+    can be restored by setting status back to publish or draft; passing force=true deletes permanently
+    and irreversibly. That behaviour is declared in Greif's own route index (the `force` argument,
+    "Whether to bypass Trash and force deletion", default false) rather than in any Greif document.
+  reversals:
+    - write_operation: deleteWpV2ProductById
+      reversal_operation: updateWpV2ProductById
+      mechanism: >-
+        DELETE without force=true trashes the product record; PATCH/POST with status=publish or
+        status=draft restores it.
+      window: null
+      window_source: null
+    - write_operation: deleteWpV2WpslStoresById
+      reversal_operation: updateWpV2WpslStoresById
+      mechanism: DELETE without force=true trashes the facility record; a status update restores it.
+      window: null
+      window_source: null
+    - write_operation: deleteWpV2PostsById
+      reversal_operation: updateWpV2PostsById
+      mechanism: DELETE without force=true trashes the post; a status update restores it.
+      window: null
+      window_source: null
+  window_note: >-
+    NOT verified. WordPress core empties the trash on a schedule governed by the EMPTY_TRASH_DAYS
+    constant (30 days by default), but that constant is server configuration and Greif publishes nothing
+    that states its value. No window is asserted here.
+dry_run_mode:
+  supported: false
+  detail: No preview/simulate/validate-only mode exists on any route.
+pagination:
+  style: page-number
+  request_parameters:
+    - name: page
+      default: 1
+      minimum: 1
+    - name: per_page
+      default: 10
+      maximum: 100
+      enforcement: >-
+        verified — per_page=9999 on /wp/v2/product returns HTTP 400 rest_invalid_param with
+        "per_page must be between 1 (inclusive) and 100 (inclusive)"
+    - name: offset
+      note: alternative to page on most collection routes
+  response_headers:
+    - name: X-WP-Total
+      meaning: total matching records
+      observed: 'X-WP-Total: 10 on /wp/v2/product; 570 on /wp/v2/posts; 14 on /wp/v2/market'
+    - name: X-WP-TotalPages
+      meaning: total pages at the requested per_page
+  link_header:
+    rfc: RFC 8288
+    observed: '<https://www.greif.com/wp-json/wp/v2/product?per_page=1&page=2>; rel="next"'
+field_selection:
+  supported: true
+  parameter: _fields
+  detail: WordPress `_fields` sparse-fieldset parameter is available on every route; Greif adds nothing.
+  embedding:
+    parameter: _embed
+    detail: '`_embed` inlines linked resources (terms, author, featured media) via the `_links` block.'
+filtering:
+  detail: >-
+    Collection routes accept search, include, exclude, slug, order, orderby, after/before,
+    modified_after/modified_before, and taxonomy filters. The Greif product route additionally filters
+    by its own taxonomies — product_category, product_material, product_capacity, product_attribute,
+    product_market, product_tag, regional_availability — which is what makes the catalog queryable.
+request_id_tracing:
+  supported: false
+  detail: >-
+    No request-id or correlation header is returned. The only per-response diagnostics are the WP Engine
+    edge-cache headers X-Cache (HIT/MISS), X-Cacheable and X-Cache-Group.
+versioning:
+  style: namespace-in-path
+  current: wp/v2
+  detail: >-
+    Versioning is WordPress's namespace convention (/wp-json/<namespace>/<version>). Greif publishes no
+    version policy of its own; the version moves when WordPress core moves.
+  artifact: lifecycle/greif-lifecycle.yml
+error_envelope:
+  shape: '{code, message, data:{status, params?, details?}}'
+  media_type: application/json
+  rfc9457: false
+  artifact: errors/greif-problem-types.yml
+rate_limit_signalling:
+  headers: []
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header on any observed response. See
+    rate-limits/greif-rate-limits.yml.
+caching:
+  headers:
+    - X-Cache
+    - X-Cacheable
+    - X-Cache-Group
+  detail: >-
+    WP Engine edge caching fronts the surface. Anonymous collection reads were observed as cacheable
+    (x-cacheable: SHORT); authenticated routes report x-cacheable "NO:Auth".
+indexing:
+  header: 'X-Robots-Tag: noindex'
+  detail: >-
+    Every wp-json response carries X-Robots-Tag noindex. Greif serves this data to machines but does not
+    want it in search indexes — a useful signal that the surface is incidental, not a published product.

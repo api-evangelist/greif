@@ -1,0 +1,44 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  registry searches on 2026-09-12 across npm, PyPI, RubyGems, crates.io, NuGet, Maven Central and
+  Packagist, plus GitHub organization lookups for greif / greif-inc
+note: >-
+  Greif publishes NO client library, SDK or CLI in any public package registry, and operates no
+  GitHub organization. sdk_count is 0 and no SDKs pointer is emitted. The only GitHub org matching
+  the name, Greif-IT, belongs to greif-it.de — an unrelated German IT services firm — and has zero
+  public repositories. This is consistent with the rest of the profile: Greif ships customer software
+  (the Greif+ portal and the Greif Green Tool) as end-user web products, not as anything an
+  integrator installs.
+packages: []
+package_count: 0
+sdk_count: 0
+registries_checked:
+  - registry: npm
+    query: greif / "@greif" scope
+    result: >-
+      no first-party package; /-/v1/search?text=greif returns only unrelated projects (Meteor Up
+      forks, a Homebridge plugin) and the @greif scope 404s
+  - registry: pypi
+    query: greif, greif-api, greifplus
+    result: 404 on every candidate — no package
+  - registry: rubygems
+    query: greif
+    result: empty result set
+  - registry: crates.io
+    query: greif
+    result: empty result set
+  - registry: nuget
+    query: greif
+    result: 1 hit (Vereinsflieger.Client), unrelated third-party .NET client
+  - registry: maven-central
+    query: greif
+    result: numFound 0
+  - registry: packagist
+    query: greif
+    result: no first-party package; matches are grifart/* and unrelated vendors
+  - registry: github
+    query: orgs/greif, orgs/greif-inc, search users type:org
+    result: >-
+      404 on both greif and greif-inc; the closest org, Greif-IT (blog www.greif-it.de,
+      info@greif-it.de), is a different company with 0 public repos

@@ -1,0 +1,302 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  live GET probes (2026-09-12) of every Greif host named in apis.yml plus every candidate host found
+  in Certificate Transparency logs for *.greif.com — the corporate site, both Greif+ customer-portal
+  hostnames, the Greif Green Tool, the Flip-hosted employee app, investor relations and the
+  sustainability microsite
+note: >-
+  NO first-party /.well-known document is served on any Greif host. hit_count is 0 and NO WellKnown
+  or SecurityTxt pointer is emitted. Three findings are worth recording because each is a trap a
+  naive probe would score as a presence:
+  (1) connect.greif.com returns a real RFC 9116 security.txt (HTTP 200, text/plain) — but it is NOT
+  Greif's. The request 308-redirects off-host to https://www.getflip.com/.well-known/security.txt and
+  the document names infosec@getflip.com. connect.greif.com is a CNAME to us01.getflip.com, a
+  white-labelled Flip employee-app tenant, so the document belongs to the vendor. It is saved here as
+  greif-connect-vendor-security.txt for evidence only; Greif publishes no vulnerability-disclosure
+  contact of its own.
+  (2) connect.greif.com and greentool.greif.com answer HTTP 200 with the same SPA shell for EVERY
+  path including a random control path — soft-404 catch-alls, not documents.
+  (3) plus.greif.com and portal.greif.com (the same Next.js Greif+ portal) return HTTP 200 with
+  Content-Type application/json and a ZERO-byte body for /llms.txt. An empty body is not a document;
+  it is recorded as a miss.
+hit_count: 0
+first_party_hit_count: 0
+hosts:
+  - host: https://www.greif.com
+    role: corporate website (WordPress)
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 404
+    soft_404_control:
+      path: /zz-soft404-control-yessiigmod
+      status: 404
+      bytes: 569003
+      verdict: honest-404
+  - host: https://greif.com
+    role: apex, serves the same WordPress site
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 404
+    soft_404_control:
+      path: /zz-soft404-control-yessiigmod
+      status: 404
+      bytes: 569003
+      verdict: honest-404
+  - host: https://plus.greif.com
+    role: Greif+ customer portal (Next.js; / redirects to /SignIn)
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 200
+        bytes: 0
+        content_type: application/json; charset=utf-8
+        verdict: empty-body — not a document, counted as a miss
+    soft_404_control:
+      path: /zz-soft404-control-yessiigmod
+      status: 404
+      bytes: 533795
+      verdict: honest-404
+  - host: https://portal.greif.com
+    role: Greif+ customer portal, second hostname for the same application
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /llms.txt
+        status: 200
+        bytes: 0
+        content_type: application/json; charset=utf-8
+        verdict: empty-body — not a document, counted as a miss
+    soft_404_control:
+      path: /zz-soft404-control-yessiigmod
+      status: 404
+      bytes: 533839
+      verdict: honest-404
+  - host: https://greentool.greif.com
+    role: Greif Green Tool 2.0 carbon-footprint calculator (Nuxt SPA)
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell, identical to the control response
+      - path: /.well-known/openid-configuration
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/api-catalog
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/agent-card.json
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell, rejected (HTML, not an AgentCard object)
+      - path: /.well-known/agent.json
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell, rejected
+      - path: /llms.txt
+        status: 200
+        bytes: 1591
+        verdict: soft-404 — SPA shell
+    soft_404_control:
+      path: /zz-soft404-control-yessiigmod
+      status: 200
+      bytes: 1591
+      verdict: catch-all — every path returns the same shell
+  - host: https://connect.greif.com
+    role: Flip employee-communication app tenant (CNAME us01.getflip.com) — vendor-operated
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        bytes: 192
+        content_type: text/plain; charset=utf-8
+        file: greif-connect-vendor-security.txt
+        redirects_to: https://www.getflip.com/.well-known/security.txt
+        verdict: >-
+          real RFC 9116 document, but it is the VENDOR's (Contact: infosec@getflip.com) and it is
+          served off-host after a 308 — not a Greif disclosure program, so no SecurityTxt or Security
+          pointer is emitted
+      - path: /.well-known/openid-configuration
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/api-catalog
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell
+      - path: /.well-known/agent-card.json
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell, rejected (HTML, not an AgentCard object)
+      - path: /.well-known/agent.json
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell, rejected
+      - path: /llms.txt
+        status: 200
+        bytes: 21265
+        verdict: soft-404 — SPA shell
+    soft_404_control:
+      path: /zz-soft404-control-yessiigmod
+      status: 200
+      bytes: 21265
+      verdict: catch-all — every path returns the same shell
+  - host: https://investor.greif.com
+    role: investor-relations site (third-party IR host)
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+      - path: /llms.txt
+        status: 403
+    soft_404_control:
+      path: /zz-soft404-control-yessiigmod
+      status: 403
+      bytes: 409
+      verdict: >-
+        edge "Access Denied" on every path including the site root — an ordinary bot policy, not
+        evidence about what the host serves
+  - host: https://app.greif.com
+    role: legacy Greif+ sign-in hostname (resolves to 192.160.132.142; no TCP/443 response)
+    documents:
+      - path: /.well-known/security.txt
+        status: 0
+      - path: /.well-known/openid-configuration
+        status: 0
+      - path: /.well-known/oauth-authorization-server
+        status: 0
+      - path: /.well-known/oauth-protected-resource
+        status: 0
+      - path: /.well-known/api-catalog
+        status: 0
+      - path: /.well-known/ai-plugin.json
+        status: 0
+      - path: /.well-known/agent-card.json
+        status: 0
+      - path: /.well-known/agent.json
+        status: 0
+      - path: /llms.txt
+        status: 0
+    note: status 0 = connection timed out; the host resolves but did not answer on 443 from our probe
+  - host: https://sustainability.greif.com
+    role: sustainability microsite named in CT logs
+    documents:
+      - path: /.well-known/security.txt
+        status: 0
+      - path: /.well-known/openid-configuration
+        status: 0
+      - path: /.well-known/oauth-authorization-server
+        status: 0
+      - path: /.well-known/oauth-protected-resource
+        status: 0
+      - path: /.well-known/api-catalog
+        status: 0
+      - path: /.well-known/ai-plugin.json
+        status: 0
+      - path: /.well-known/agent-card.json
+        status: 0
+      - path: /.well-known/agent.json
+        status: 0
+      - path: /llms.txt
+        status: 0
+    note: status 0 = no DNS/TCP answer from our probe
+a2a_agent_card: not-found

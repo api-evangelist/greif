@@ -35,11 +35,80 @@ tags:
   - Sustainability
   - Fortune 1000
 created: '2026-03-24'
-modified: '2026-04-28'
+modified: '2026-09-12'
 url: >-
   https://raw.githubusercontent.com/api-evangelist/greif/refs/heads/main/apis.yml
 specificationVersion: '0.23'
-apis: []
+apis:
+  - aid: greif:greif-wordpress-rest-api
+    name: Greif WordPress REST API
+    description: >-
+      The WordPress REST API served by Greif's corporate website at https://www.greif.com/wp-json — 554
+      routes across 39 namespaces, 182 of them under wp/v2, discovered by probing the API host root on
+      2026-09-12. This is the only machine-readable contract Greif publishes. It is CMS infrastructure
+      rather than a product — Greif runs no developer program, publishes no documentation, SDKs, pricing
+      or terms for programmatic use, and every response carries x-robots-tag noindex — but unlike most
+      corporate WordPress sites, Greif has registered its OWN domain entities for REST, so the surface
+      carries real packaging data: product (the packaging catalog), the product_category,
+      product_material, product_capacity, product_attribute, product_market, product_tag and
+      regional_availability taxonomies, market, technology, sustainability_items, and the facility
+      locator as wpsl_stores plus the store_location taxonomy. Anonymous reads on all of those were
+      verified live; /wp/v2/settings, /wp/v2/users and /wpsl/v1/block-data return 401, and writes require
+      a WordPress account on Greif's own site, which a third party cannot obtain.
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/greif.png
+    humanURL: https://www.greif.com/wp-json/
+    baseURL: https://www.greif.com/wp-json
+    tags:
+      - WordPress
+      - Content
+      - CMS
+      - Product Catalog
+      - Packaging
+    properties:
+      - type: OpenAPI
+        url: openapi/greif-wordpress-rest-openapi.yml
+      - type: OpenAPISource
+        url: openapi/greif-wp-json-discovery.json
+      - type: Overlay
+        url: overlays/greif-wordpress-rest-overlay.yaml
+      - type: x-upstream-documentation
+        url: https://developer.wordpress.org/rest-api/
+    x-evidence:
+      discovery_url: https://www.greif.com/wp-json/
+      http_status: 200
+      routes: 554
+      wp_v2_routes: 182
+      namespaces: 39
+      fetched: '2026-09-12'
+      anonymous_read_verified:
+        - https://www.greif.com/wp-json/wp/v2/product
+        - https://www.greif.com/wp-json/wp/v2/product_category
+        - https://www.greif.com/wp-json/wp/v2/product_material
+        - https://www.greif.com/wp-json/wp/v2/product_capacity
+        - https://www.greif.com/wp-json/wp/v2/product_attribute
+        - https://www.greif.com/wp-json/wp/v2/product_market
+        - https://www.greif.com/wp-json/wp/v2/regional_availability
+        - https://www.greif.com/wp-json/wp/v2/market
+        - https://www.greif.com/wp-json/wp/v2/technology
+        - https://www.greif.com/wp-json/wp/v2/sustainability_items
+        - https://www.greif.com/wp-json/wp/v2/wpsl_stores
+        - https://www.greif.com/wp-json/wp/v2/store_location
+        - https://www.greif.com/wp-json/wp/v2/posts
+        - https://www.greif.com/wp-json/wp/v2/types
+        - https://www.greif.com/wp-json/wp/v2/taxonomies
+        - https://www.greif.com/wp-json/wp/v2/search
+      auth_gated:
+        - url: https://www.greif.com/wp-json/wp/v2/settings
+          status: 401
+        - url: https://www.greif.com/wp-json/wp/v2/users
+          status: 401
+        - url: https://www.greif.com/wp-json/wpsl/v1/block-data
+          status: 401
+      ownership: >-
+        Served from www.greif.com, Greif's own registrable domain. The discovery document
+        self-identifies as name "Greif", description "Packaging Success Together", url and home
+        https://www.greif.com, and the custom post types are Greif's own packaging entities. No
+        sibling-brand or third-party host is involved.
 common:
   - type: DomainSecurity
     url: security/greif-domain-security.yml
@@ -49,6 +118,91 @@ common:
     name: Greif Website
     description: Official corporate website for Greif.
     url: https://www.greif.com
+  - type: Authentication
+    name: Greif Authentication Profile
+    description: Auth schemes derived from the contract — HTTP Basic application passwords and cookie + X-WP-Nonce; reads are anonymous.
+    url: authentication/greif-authentication.yml
+  - type: Conventions
+    name: Greif API Conventions
+    description: Paging, filtering, field selection, caching, versioning, reversibility and the absence of idempotency.
+    url: conventions/greif-conventions.yml
+  - type: ErrorCatalog
+    name: Greif Error Catalog
+    description: The five WordPress REST error codes observed live on greif.com, with the response envelope.
+    url: errors/greif-problem-types.yml
+  - type: DataModel
+    name: Greif Data Model
+    description: Entity graph of Greif's own custom post types and taxonomies — products, catalog taxonomies, markets, technologies, sustainability items and facilities.
+    url: data-model/greif-data-model.yml
+  - type: Lifecycle
+    name: Greif API Lifecycle
+    description: Versioning, and the absence of a deprecation policy, SLA, changelog or status page.
+    url: lifecycle/greif-lifecycle.yml
+  - type: Conformance
+    name: Greif Conformance
+    description: Standards the contract does and does not meet, read off observed behaviour.
+    url: conformance/greif-conformance.yml
+  - type: AgentSkill
+    name: Greif Agent Skills
+    description: Two packaged skills over the verified anonymous read surface — browse the packaging catalog, find facilities.
+    url: skills/_index.yml
+  - type: X-MCPServerCandidate
+    name: Greif MCP Candidate Tool List
+    description: Derived candidate tools over the one contract Greif serves. Greif ships no MCP server; nothing is deployed.
+    url: mcp/greif-mcp.yml
+  - type: x-well-known-probe
+    name: Greif Well-Known Probe
+    description: Probe record for every Greif host — no first-party /.well-known document is served.
+    url: well-known/greif-well-known.yml
+  - type: LLMsTxt
+    name: Greif llms.txt
+    description: Generated llms.txt summarizing Greif's (absent) API surface and public company pages.
+    url: llms/greif-llms.txt
+  - type: Packages
+    name: Greif Packages Survey
+    description: Registry survey across npm, PyPI, RubyGems, crates.io, NuGet, Maven Central and Packagist — no first-party package exists.
+    url: packages/greif-packages.yml
+  - type: Plans
+    name: Greif Plans and Pricing
+    description: No API plans or pricing are published; the Greif+ price list is customer-authenticated.
+    url: plans/greif-plans-pricing.yml
+  - type: RateLimits
+    name: Greif Rate Limits
+    description: No API rate limits are published; only a robots.txt crawl-delay directive exists.
+    url: rate-limits/greif-rate-limits.yml
+  - type: Blog
+    name: Greif Blog
+    description: Greif corporate blog covering packaging, sustainability and PPWR regulation.
+    url: https://www.greif.com/category/blog/
+  - type: BlogRSS
+    name: Greif Blog RSS
+    description: RSS feed for the Greif website.
+    url: https://www.greif.com/feed/
+  - type: Support
+    name: Greif Contact and Support
+    description: Greif contact page — the company's published support channel.
+    url: https://www.greif.com/contact/
+  - type: TermsOfService
+    name: Greif Terms and Conditions
+    description: Website terms and conditions of use.
+    url: https://www.greif.com/terms-and-conditions/
+  - type: PrivacyPolicy
+    name: Greif Privacy Policy
+    description: Greif privacy policy.
+    url: https://www.greif.com/privacy-policy/
+  - type: x-customer-portal
+    name: Greif+ Customer Portal
+    description: Greif+ customer portal for orders, forecasts, datasheets, price lists and invoices. Customer sign-in only; no API or developer documentation accompanies it.
+    url: https://www.greif.com/greif-plus/
+  - type: YouTube
+    name: Greif on YouTube
+    description: Official Greif YouTube channel.
+    url: https://www.youtube.com/channel/UCFa1IzCyPcTp-ckGTcIMwNw
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-12'
+  status: enriched
+  artifacts_added: 19
+  pass: local-v3

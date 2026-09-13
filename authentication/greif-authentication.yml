@@ -1,0 +1,27 @@
+generated: '2026-09-12'
+method: derived
+source: openapi/greif-wordpress-rest-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: WordPress application passwords, advertised by the site's own discovery document
+    at https://www.greif.com/wp-json/ (authentication.application-passwords.endpoints.authorization
+    = https://www.greif.com/wp-admin/authorize-application.php). Issued only to WordPress user
+    accounts on the Greif site; not available to third parties.
+  sources:
+  - openapi/greif-wordpress-rest-openapi.yml
+- name: cookieNonce
+  type: apiKey
+  in: header
+  parameter: X-WP-Nonce
+  description: WordPress logged-in cookie plus an X-WP-Nonce header — the in-browser authentication
+    path for the site's own editors.
+  sources:
+  - openapi/greif-wordpress-rest-openapi.yml

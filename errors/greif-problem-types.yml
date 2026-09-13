@@ -1,0 +1,74 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  live unauthenticated responses from https://www.greif.com/wp-json/ (2026-09-12), cross-checked
+  against openapi/greif-wordpress-rest-openapi.yml
+subject: Greif WordPress REST API (https://www.greif.com/wp-json)
+format: wordpress-rest-error
+rfc9457: false
+rfc9457_note: >-
+  Not application/problem+json. The envelope is WordPress's own {code, message, data.status} shape,
+  returned as application/json. Greif publishes no error reference; every entry below was read off a
+  live response, and only codes actually observed are listed.
+envelope:
+  media_type: application/json
+  fields:
+    code: machine-readable error slug
+    message: human-readable sentence
+    data.status: the HTTP status repeated in the body
+    data.params: per-parameter validation messages (rest_invalid_param only)
+    data.details: per-parameter structured detail with its own nested code (rest_invalid_param only)
+error_count: 5
+errors:
+  - code: rest_invalid_param
+    status: 400
+    title: A request parameter failed validation
+    observed_message: 'Invalid parameter(s): per_page'
+    remediation: >-
+      Read data.params and data.details for the per-parameter reason. Collection routes cap per_page at
+      100 (observed nested code rest_out_of_bounds, "per_page must be between 1 (inclusive) and 100
+      (inclusive)").
+    evidence: https://www.greif.com/wp-json/wp/v2/product?per_page=9999
+    http_status: 400
+    observed: '2026-09-12'
+  - code: rest_no_route
+    status: 404
+    title: No route matches this URL and method
+    observed_message: No route was found matching the URL and request method.
+    remediation: >-
+      Read the route index at https://www.greif.com/wp-json/ — it is the only published description of
+      what exists. Namespaces that are NOT registered on this site (wp-abilities/v1, mcp) return this
+      code.
+    evidence: https://www.greif.com/wp-json/wp/v2/nope-does-not-exist
+    http_status: 404
+    observed: '2026-09-12'
+  - code: rest_post_invalid_id
+    status: 404
+    title: The requested record id does not exist
+    observed_message: Invalid post ID.
+    remediation: List the collection first and use an id from it; ids are site-local WordPress post ids.
+    evidence: https://www.greif.com/wp-json/wp/v2/product/999999999
+    http_status: 404
+    observed: '2026-09-12'
+  - code: rest_forbidden
+    status: 401
+    title: Authentication is required for this route
+    observed_message: Sorry, you are not allowed to do that.
+    remediation: >-
+      Not actionable for a third party. The route requires a WordPress account on greif.com; there is no
+      public credential issuance path.
+    evidence: https://www.greif.com/wp-json/wp/v2/settings
+    http_status: 401
+    observed: '2026-09-12'
+  - code: rest_cannot_access
+    status: 401
+    title: The user endpoint refuses anonymous callers
+    observed_message: Only authenticated users can access the User endpoint REST API.
+    remediation: Not actionable for a third party; the user directory is closed by design.
+    evidence: https://www.greif.com/wp-json/wp/v2/users
+    http_status: 401
+    observed: '2026-09-12'
+not_observed_note: >-
+  WordPress defines many more error slugs (rest_cannot_create, rest_cannot_edit, rest_cookie_invalid_nonce
+  and so on). They are deliberately NOT listed here: they were not observed against this host, and this
+  catalog records what a provider actually returned, not what its upstream software can return.

@@ -1,0 +1,57 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  live unauthenticated responses from https://www.greif.com/wp-json/ (2026-09-12) and
+  https://www.greif.com/robots.txt
+subject: Greif WordPress REST API (https://www.greif.com/wp-json)
+limit_count: 0
+rate_limits: []
+headers: []
+note: >-
+  No rate limit is published or signalled. Greif documents nothing for this surface, and no RateLimit-*,
+  X-RateLimit-* or Retry-After header appeared on any of the ~40 anonymous requests made during this
+  pass. The only throttling signals present are a per-collection page-size cap and an edge cache, both
+  recorded below, plus a crawler directive in robots.txt that governs indexing rather than API
+  consumption. An agent should assume an undisclosed WAF/edge limit exists and back off on any
+  non-2xx burst rather than rely on a published number, because there is none.
+page_size_cap:
+  parameter: per_page
+  default: 10
+  maximum: 100
+  enforcement: >-
+    HTTP 400 rest_invalid_param with data.details.per_page.code = rest_out_of_bounds, observed on
+    https://www.greif.com/wp-json/wp/v2/product?per_page=9999
+edge_cache:
+  vendor: WP Engine
+  headers:
+    - X-Cache
+    - X-Cacheable
+    - X-Cache-Group
+  detail: >-
+    Anonymous collection reads report x-cacheable SHORT and x-cache HIT/MISS; auth-gated routes report
+    x-cacheable "NO:Auth". Cache hits absorb repeat traffic, which is likely why no explicit limit is
+    enforced on reads.
+crawler_directives:
+  - url: https://www.greif.com/robots.txt
+    status: 200
+    directive: 'Crawl-delay: 10'
+    ai_bots_allowed:
+      - GPTBot
+      - OAI-SearchBot
+      - ChatGPT-User
+    note: >-
+      robots.txt explicitly ALLOWS the three OpenAI crawlers and disallows only /wp-admin/. Note the
+      tension with the API surface itself, which returns X-Robots-Tag noindex on every response.
+evidence:
+  - url: https://www.greif.com/wp-json/wp/v2/product?per_page=1
+    status: 200
+    finding: no RateLimit-*, X-RateLimit-* or Retry-After header; X-WP-Total and Link present
+  - url: https://www.greif.com/wp-json/wp/v2/product?per_page=9999
+    status: 400
+    finding: per_page capped at 100, enforced with rest_invalid_param
+  - url: https://www.greif.com/robots.txt
+    status: 200
+    finding: 'Crawl-delay: 10'
+  - url: https://investor.greif.com/
+    status: 403
+    finding: blanket edge denial on a different host, carrying no rate-limit headers

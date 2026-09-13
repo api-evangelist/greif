@@ -1,0 +1,57 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Greif WordPress REST API
+  version: 1.0.0
+x-generated: '2026-09-12'
+x-method: generated
+x-source: openapi/greif-wordpress-rest-openapi.yml
+x-note: >-
+  This overlay records API Evangelist's annotations on top of the derived contract. It never mutates the
+  provider's own document — Greif publishes no OpenAPI at all, so the "original" here is our own
+  mechanical transform of Greif's route index, kept separate so the transform stays auditable.
+extends: openapi/greif-wordpress-rest-openapi.yml
+actions:
+  - target: $.info
+    update:
+      x-api-evangelist-profile: https://apis.io/provider/greif
+      x-surface-class: cms-incidental
+      x-publisher-intent: >-
+        Not published as a product. The interface is a side effect of the corporate website's CMS; every
+        response carries X-Robots-Tag noindex and no documentation, terms or support exist for it.
+  - target: $.paths['/wp/v2/product'].get
+    update:
+      x-business-value: >-
+        The packaging product catalog as JSON, filterable by Greif's own taxonomies. The most useful
+        anonymous read on the surface.
+      x-anonymous-verified: '2026-09-12'
+      x-records-observed: 10
+  - target: $.paths['/wp/v2/wpsl_stores'].get
+    update:
+      x-business-value: >-
+        Facility and distributor locator records — the plants behind the Locations page.
+      x-anonymous-verified: '2026-09-12'
+  - target: $.paths['/wp/v2/market'].get
+    update:
+      x-business-value: The end markets Greif packages for (14 records observed).
+      x-anonymous-verified: '2026-09-12'
+  - target: $.paths['/wp/v2/sustainability_items'].get
+    update:
+      x-business-value: Sustainability programme items and targets.
+      x-anonymous-verified: '2026-09-12'
+  - target: $.paths['/wp/v2/settings'].get
+    update:
+      x-access: auth-gated
+      x-observed-status: 401
+  - target: $.paths['/wp/v2/users'].get
+    update:
+      x-access: auth-gated
+      x-observed-status: 401
+  - target: $.paths['/wp/v2/sales-contact'].get
+    update:
+      x-pii: true
+      x-handling: >-
+        Answers anonymously but may carry personal data; not mirrored into the API Evangelist profile.
+  - target: $.paths['/wp/v2/leadership-council'].get
+    update:
+      x-pii: true
+      x-handling: Same posture as sales-contact — recorded, never mirrored.

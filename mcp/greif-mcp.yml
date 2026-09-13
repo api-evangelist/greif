@@ -1,0 +1,78 @@
+generated: '2026-09-12'
+method: derived
+status: candidate
+source: >-
+  derived from openapi/greif-wordpress-rest-openapi.yml after searching for a published server and
+  finding none
+subject: Greif
+name: greif-candidate
+description: >-
+  A CANDIDATE tool list. Greif ships no MCP server. This is what a server over the one contract Greif
+  actually serves — the WordPress REST API on the corporate site — would expose, derived from operations
+  that were verified to answer anonymously. Nothing here is running anywhere.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: derived
+search_evidence:
+  - probe: https://www.greif.com/wp-json/ namespace list
+    result: >-
+      39 namespaces served; none is an MCP adapter namespace. /wp-json/mcp returns rest_no_route, and
+      the WordPress Abilities API namespace (wp-abilities/v1), which a future WordPress MCP adapter
+      would expose, is NOT registered on this site.
+    status: 200
+  - probe: https://www.greif.com/wp-json/mcp
+    result: rest_no_route
+    status: 404
+  - probe: https://www.greif.com/wp-json/wp-abilities/v1/abilities
+    result: rest_no_route — the namespace does not exist on this site
+    status: 404
+  - probe: https://mcp.greif.com
+    result: NXDOMAIN
+    status: null
+  - probe: web search for a Greif MCP server or npm/PyPI package
+    result: none published
+    status: null
+tools:
+  - name: list_greif_products
+    description: List packaging products from the Greif catalog, filterable by category, material, capacity, market and regional availability.
+    rest: [getWpV2Product]
+    anonymous: true
+  - name: get_greif_product
+    description: Fetch one packaging product record by its id.
+    rest: [getWpV2ProductById]
+    anonymous: true
+  - name: list_greif_product_taxonomies
+    description: List the catalog's classification terms — categories, materials, capacities, attributes, markets and regional availability.
+    rest: [getWpV2ProductCategory, getWpV2ProductMaterial, getWpV2ProductCapacity, getWpV2ProductAttribute, getWpV2ProductMarket, getWpV2RegionalAvailability]
+    anonymous: true
+  - name: find_greif_facilities
+    description: List Greif facility and distributor locator records, optionally narrowed by region or facility category.
+    rest: [getWpV2WpslStores, getWpV2StoreLocation, getWpV2WpslStoreCategory]
+    anonymous: true
+  - name: list_greif_markets
+    description: List the end markets Greif packages for.
+    rest: [getWpV2Market]
+    anonymous: true
+  - name: list_greif_technologies
+    description: List Greif packaging technology pages.
+    rest: [getWpV2Technology]
+    anonymous: true
+  - name: list_greif_sustainability_items
+    description: List Greif sustainability programme items and targets.
+    rest: [getWpV2SustainabilityItems]
+    anonymous: true
+  - name: search_greif_content
+    description: Full-text search across Greif corporate site content.
+    rest: [getWpV2Search]
+    anonymous: true
+excluded_tools:
+  - reason: >-
+      Write operations are excluded. Every mutating route requires a WordPress account on greif.com,
+      which no third party can obtain, so a tool for one would be undeliverable.
+  - reason: >-
+      sales-contact and leadership-council reads are excluded on PII grounds even though they answer
+      anonymously.

@@ -1,0 +1,63 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  openapi/greif-wordpress-rest-openapi.yml and live responses from https://www.greif.com/wp-json/
+  (2026-09-12)
+subject: Greif WordPress REST API (https://www.greif.com/wp-json)
+note: >-
+  Reward-only assessment. Greif makes no compliance or standards claim about this interface anywhere —
+  there is no documentation to claim it in — so every entry below is read off observed behaviour.
+conformance:
+  - id: rest
+    conforms: true
+    evidence: >-
+      Resource-oriented paths, HTTP verbs carrying CRUD semantics, JSON representations, and RFC 8288
+      Link pagination observed on https://www.greif.com/wp-json/wp/v2/product
+  - id: rfc8288-web-linking
+    conforms: true
+    evidence: 'Link: <…&page=2>; rel="next" returned on every collection route'
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors are application/json in WordPress's {code, message, data.status} envelope, not
+      application/problem+json — observed on /wp/v2/settings (401) and /wp/v2/product?per_page=9999 (400)
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No OAuth 2.0 anywhere. /.well-known/oauth-authorization-server 404s on every Greif host and the
+      only schemes advertised are HTTP Basic application passwords and a cookie + X-WP-Nonce
+  - id: openid-connect
+    conforms: false
+    evidence: /.well-known/openid-configuration returns 404 on www.greif.com and greif.com
+  - id: pagination
+    conforms: true
+    evidence: 'page/per_page with X-WP-Total and X-WP-TotalPages; per_page capped at 100 and enforced with HTTP 400'
+  - id: idempotency
+    conforms: false
+    evidence: No Idempotency-Key header is accepted or documented on any route
+  - id: openapi
+    conforms: false
+    evidence: >-
+      Greif publishes no OpenAPI. The document in this repository is derived by API Evangelist from
+      Greif's own route index and is not served by Greif
+  - id: json-schema
+    conforms: partial
+    evidence: >-
+      Each route advertises its arguments with type, default, enum and required flags in the WordPress
+      arg-schema dialect at https://www.greif.com/wp-json/, and per-entity schemas are retrievable via
+      the OPTIONS method — a schema surface, but not a published JSON Schema document
+domain_standards:
+  - id: none-applicable
+    conforms: false
+    note: >-
+      Industrial packaging has domain data standards for transport marking and hazardous-goods
+      classification (UN/DOT packaging codes, GHS), and the trading interface Greif's customers actually
+      use is EDI (ANSI ASC X12, UN/EDIFACT) run bilaterally through partner networks. None of them is
+      declared by this contract, and nothing in the route index carries a UN packaging code, a GHS class
+      or an EDI message type. Recorded as absent rather than invented — this is a reward-only dimension.
+certifications_published: false
+certifications_note: >-
+  Greif publishes corporate compliance policies and sustainability reporting, but no security or privacy
+  certification (SOC 2, ISO 27001, PCI, HIPAA) is published for any digital surface, and no trust center
+  exists. probe-security-programs.py found neither a vulnerability-disclosure program nor a trust center
+  on 2026-09-12.

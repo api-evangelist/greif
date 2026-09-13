@@ -1,0 +1,50 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  openapi/greif-wp-json-discovery.json plus probes of status.greif.com, developer.greif.com and the
+  Greif website navigation (2026-09-12)
+subject: Greif WordPress REST API (https://www.greif.com/wp-json)
+versioning:
+  scheme: namespace-in-path
+  current_version: wp/v2
+  detail: >-
+    The version is WordPress's namespace (/wp-json/wp/v2). It is upstream software versioning, not a
+    Greif API version — Greif publishes no version policy, no version header and no changelog for this
+    surface.
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  detail: >-
+    No deprecation policy, no Sunset or Deprecation response header, and no notice channel. A route can
+    disappear when a plugin is deactivated with no announcement, which is a real risk for a consumer:
+    83 of the 554 routes belong to a search plugin and 55 to a page builder, and plugin churn is the
+    normal cause of change here.
+deprecated_operations: []
+status_page:
+  published: false
+  detail: status.greif.com is NXDOMAIN; no status or uptime page exists on any Greif host.
+sla:
+  published: false
+  detail: No SLA, uptime commitment or support tier is published for programmatic use.
+changelog:
+  published: false
+  detail: >-
+    Greif publishes a corporate blog and press releases but nothing that records changes to this
+    interface. The only change signal available to a consumer is polling the route index itself.
+support_channel:
+  url: https://www.greif.com/contact/
+  detail: >-
+    A general corporate contact form. There is no developer support channel, and this interface is not
+    something Greif offers support for.
+evidence:
+  - url: https://status.greif.com
+    status: 0
+    finding: NXDOMAIN
+  - url: https://developer.greif.com
+    status: 0
+    finding: NXDOMAIN
+  - url: https://www.greif.com/wp-json/
+    status: 200
+    finding: route index is the only published description of the surface, and it is undated

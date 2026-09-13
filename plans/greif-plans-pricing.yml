@@ -1,0 +1,27 @@
+generated: '2026-09-12'
+method: searched
+source: https://www.greif.com/greif-plus/
+plan_count: 0
+plans: []
+note: >-
+  Greif publishes no API plans or pricing of any kind, because it publishes no API. Industrial
+  packaging is sold through sales, distribution and negotiated contracts, and the one place a price
+  list exists — "current and future pricing" and downloadable price lists inside the Greif+ customer
+  portal — requires an authenticated customer account: plus.greif.com redirects every anonymous
+  request to /SignIn. There is no developer plan, subscription tier, quota or overage published
+  anywhere on a Greif host, and no developer.greif.com / api.greif.com hostname exists to carry one.
+  An honest zero, not a gap in the probe. The one API Greif does serve — the WordPress REST API on the
+  corporate site — is free, anonymous and undocumented, with no plan, quota or commercial terms attached
+  to it at all.
+evidence:
+  - url: https://www.greif.com/greif-plus/
+    status: 200
+    finding: >-
+      Greif+ marketing page lists portal features (orders, forecasts, datasheets, pricing, invoices)
+      and links to the portal sign-in; no plans, tiers or prices are shown
+  - url: https://plus.greif.com/
+    status: 200
+    finding: 302 to /SignIn — the portal (and any price list inside it) is customer-authenticated
+  - url: https://developer.greif.com
+    status: 0
+    finding: NXDOMAIN — no developer portal hostname exists to publish plans on

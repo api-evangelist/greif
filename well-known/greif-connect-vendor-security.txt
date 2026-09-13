@@ -1,0 +1,10 @@
+
+# Our security address 
+Contact: mailto:infosec@getflip.com
+
+# Our prefrered languages
+Preferred-Languages: en,de
+
+Hiring: https://www.getflip.com/careers/
+
+Expires: 2026-12-31T22:59:00.000Z

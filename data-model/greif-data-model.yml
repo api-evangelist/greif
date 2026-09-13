@@ -1,0 +1,164 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  openapi/greif-wp-json-discovery.json (the provider-served route index) plus live reads of
+  https://www.greif.com/wp-json/wp/v2/types and /wp/v2/taxonomies (2026-09-12)
+subject: Greif WordPress REST API (https://www.greif.com/wp-json)
+note: >-
+  The entity graph below is the part of the surface that is Greif's OWN, not WordPress's. Stock CMS
+  entities (post, page, media, block, template, menu, widget, user, comment) are present on the API but
+  omitted here because they describe the website, not the business. Relationship edges come from the
+  taxonomy arguments each custom post type registers on its own route — a taxonomy argument on
+  /wp/v2/product IS the has_many edge — and were read out of the route index, not inferred.
+id_scheme:
+  style: integer WordPress post/term ids, site-local
+  detail: >-
+    Every entity is addressed by a bare integer id unique only to greif.com; there is no prefix, UUID or
+    external identifier. A slug field carries the human-readable key (e.g. product_category "adhesives").
+entities:
+  - name: product
+    route: /wp/v2/product
+    kind: custom-post-type
+    description: The Greif packaging product catalog — the drums, IBCs, jerrycans, closures and board products.
+    count_observed: 10
+    anonymous_read: true
+  - name: product_category
+    route: /wp/v2/product_category
+    kind: taxonomy
+    description: Product family (e.g. Adhesives), hierarchical.
+    anonymous_read: true
+  - name: product_material
+    route: /wp/v2/product_material
+    kind: taxonomy
+    description: Material of construction (steel, plastic, fibre, adhesives).
+    anonymous_read: true
+  - name: product_capacity
+    route: /wp/v2/product_capacity
+    kind: taxonomy
+    description: Nominal capacity band of the container.
+    anonymous_read: true
+  - name: product_attribute
+    route: /wp/v2/product_attribute
+    kind: taxonomy
+    description: Product attributes such as Biodegradable.
+    anonymous_read: true
+  - name: product_market
+    route: /wp/v2/product_market
+    kind: taxonomy
+    description: End market a product serves (Agriculture, Specialty Chemicals, Food & Beverage …).
+    anonymous_read: true
+  - name: product_tag
+    route: /wp/v2/product_tag
+    kind: taxonomy
+    anonymous_read: true
+  - name: regional_availability
+    route: /wp/v2/regional_availability
+    kind: taxonomy
+    description: Where a product can be bought (e.g. Available Globally).
+    anonymous_read: true
+  - name: visibility
+    route: /wp/v2/visibility
+    kind: taxonomy
+    description: Catalog visibility flag (e.g. Exclude From Catalog) — a merchandising control, exposed publicly.
+    anonymous_read: true
+  - name: market
+    route: /wp/v2/market
+    kind: custom-post-type
+    description: Market landing pages (14 observed) — the industries Greif packages for.
+    count_observed: 14
+    anonymous_read: true
+  - name: technology
+    route: /wp/v2/technology
+    kind: custom-post-type
+    description: Packaging technology pages (permeation barrier sciences, con-tech and similar).
+    anonymous_read: true
+  - name: sustainability_items
+    route: /wp/v2/sustainability_items
+    kind: custom-post-type
+    description: Sustainability programme items and targets.
+    anonymous_read: true
+  - name: wpsl_stores
+    route: /wp/v2/wpsl_stores
+    kind: custom-post-type
+    description: >-
+      Facility / distributor locator records — the plants and partners behind the Locations page. This
+      is the WP Store Locator plugin's entity, populated with Greif's own network.
+    anonymous_read: true
+  - name: wpsl_store_category
+    route: /wp/v2/wpsl_store_category
+    kind: taxonomy
+    description: Facility category.
+    anonymous_read: true
+  - name: store_location
+    route: /wp/v2/store_location
+    kind: taxonomy
+    description: Region grouping for facilities (APAC observed with 20 members).
+    anonymous_read: true
+  - name: sales-contact
+    route: /wp/v2/sales-contact
+    kind: custom-post-type
+    description: >-
+      Sales contact records used to route enquiries. NOT mirrored into this profile — it may carry
+      personal data, and nothing from it is copied here beyond the existence of the route.
+    anonymous_read: true
+    pii_flag: true
+  - name: leadership-council
+    route: /wp/v2/leadership-council
+    kind: custom-post-type
+    description: Leadership council member pages. Same PII posture as sales-contact — recorded, not mirrored.
+    anonymous_read: true
+    pii_flag: true
+  - name: greif_custom_table
+    route: /wp/v2/greif_custom_table
+    kind: custom-post-type
+    description: A bespoke table-content type used inside pages; one record observed.
+    count_observed: 1
+    anonymous_read: true
+relationships:
+  - from: product
+    to: product_category
+    type: has_many
+    via: product_category argument on /wp/v2/product
+  - from: product
+    to: product_material
+    type: has_many
+    via: product_material argument on /wp/v2/product
+  - from: product
+    to: product_capacity
+    type: has_many
+    via: product_capacity argument on /wp/v2/product
+  - from: product
+    to: product_attribute
+    type: has_many
+    via: product_attribute argument on /wp/v2/product
+  - from: product
+    to: product_market
+    type: has_many
+    via: product_market argument on /wp/v2/product
+  - from: product
+    to: product_tag
+    type: has_many
+    via: product_tag argument on /wp/v2/product
+  - from: product
+    to: regional_availability
+    type: has_many
+    via: regional_availability argument on /wp/v2/product
+  - from: product
+    to: visibility
+    type: has_many
+    via: visibility argument on /wp/v2/product
+  - from: wpsl_stores
+    to: wpsl_store_category
+    type: has_many
+    via: wpsl_store_category argument on /wp/v2/wpsl_stores
+  - from: wpsl_stores
+    to: store_location
+    type: has_many
+    via: store_location argument on /wp/v2/wpsl_stores
+gaps:
+  - >-
+    No price, stock, lead-time or specification-sheet field is exposed. The commercial data a buyer
+    wants lives in the authenticated Greif+ portal, not here.
+  - >-
+    Only 10 product records are published on this surface, against a product catalog page that presents
+    far more SKUs — the REST catalog is a subset, not the master list.
