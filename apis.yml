@@ -40,76 +40,793 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/greif/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 apis:
-  - aid: greif:greif-wordpress-rest-api
-    name: Greif WordPress REST API
-    description: >-
-      The WordPress REST API served by Greif's corporate website at https://www.greif.com/wp-json — 554
-      routes across 39 namespaces, 182 of them under wp/v2, discovered by probing the API host root on
-      2026-09-12. This is the only machine-readable contract Greif publishes. It is CMS infrastructure
-      rather than a product — Greif runs no developer program, publishes no documentation, SDKs, pricing
-      or terms for programmatic use, and every response carries x-robots-tag noindex — but unlike most
-      corporate WordPress sites, Greif has registered its OWN domain entities for REST, so the surface
-      carries real packaging data: product (the packaging catalog), the product_category,
-      product_material, product_capacity, product_attribute, product_market, product_tag and
-      regional_availability taxonomies, market, technology, sustainability_items, and the facility
-      locator as wpsl_stores plus the store_location taxonomy. Anonymous reads on all of those were
-      verified live; /wp/v2/settings, /wp/v2/users and /wpsl/v1/block-data return 401, and writes require
-      a WordPress account on Greif's own site, which a third party cannot obtain.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/greif.png
-    humanURL: https://www.greif.com/wp-json/
-    baseURL: https://www.greif.com/wp-json
-    tags:
-      - WordPress
-      - Content
-      - CMS
-      - Product Catalog
-      - Packaging
-    properties:
-      - type: OpenAPI
-        url: openapi/greif-wordpress-rest-openapi.yml
-      - type: OpenAPISource
-        url: openapi/greif-wp-json-discovery.json
-      - type: Overlay
-        url: overlays/greif-wordpress-rest-overlay.yaml
-      - type: x-upstream-documentation
-        url: https://developer.wordpress.org/rest-api/
-    x-evidence:
-      discovery_url: https://www.greif.com/wp-json/
-      http_status: 200
-      routes: 554
-      wp_v2_routes: 182
-      namespaces: 39
-      fetched: '2026-09-12'
-      anonymous_read_verified:
-        - https://www.greif.com/wp-json/wp/v2/product
-        - https://www.greif.com/wp-json/wp/v2/product_category
-        - https://www.greif.com/wp-json/wp/v2/product_material
-        - https://www.greif.com/wp-json/wp/v2/product_capacity
-        - https://www.greif.com/wp-json/wp/v2/product_attribute
-        - https://www.greif.com/wp-json/wp/v2/product_market
-        - https://www.greif.com/wp-json/wp/v2/regional_availability
-        - https://www.greif.com/wp-json/wp/v2/market
-        - https://www.greif.com/wp-json/wp/v2/technology
-        - https://www.greif.com/wp-json/wp/v2/sustainability_items
-        - https://www.greif.com/wp-json/wp/v2/wpsl_stores
-        - https://www.greif.com/wp-json/wp/v2/store_location
-        - https://www.greif.com/wp-json/wp/v2/posts
-        - https://www.greif.com/wp-json/wp/v2/types
-        - https://www.greif.com/wp-json/wp/v2/taxonomies
-        - https://www.greif.com/wp-json/wp/v2/search
-      auth_gated:
-        - url: https://www.greif.com/wp-json/wp/v2/settings
-          status: 401
-        - url: https://www.greif.com/wp-json/wp/v2/users
-          status: 401
-        - url: https://www.greif.com/wp-json/wpsl/v1/block-data
-          status: 401
-      ownership: >-
-        Served from www.greif.com, Greif's own registrable domain. The discovery document
-        self-identifies as name "Greif", description "Packaging Success Together", url and home
-        https://www.greif.com, and the custom post types are Greif's own packaging entities. No
-        sibling-brand or third-party host is involved.
+- aid: greif:greif-block-directory-api
+  name: Greif Block Directory API
+  description: The block-directory API from Greif — 1 operation(s) for block-directory.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - block-directory
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-block-directory-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-block-patterns-api
+  name: Greif Block Patterns API
+  description: The block-patterns API from Greif — 2 operation(s) for block-patterns.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - block-patterns
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-block-patterns-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-block-renderer-api
+  name: Greif Block Renderer API
+  description: The block-renderer API from Greif — 1 operation(s) for block-renderer.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - block-renderer
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-block-renderer-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-block-types-api
+  name: Greif Block Types API
+  description: The block-types API from Greif — 3 operation(s) for block-types.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - block-types
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-block-types-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-blocks-api
+  name: Greif Blocks API
+  description: The blocks API from Greif — 6 operation(s) for blocks.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - blocks
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-blocks-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-categories-api
+  name: Greif Categories API
+  description: The categories API from Greif — 2 operation(s) for categories.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - categories
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-categories-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-comments-api
+  name: Greif Comments API
+  description: The comments API from Greif — 2 operation(s) for comments.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - comments
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-comments-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-e-floating-buttons-api
+  name: Greif E Floating Buttons API
+  description: The e-floating-buttons API from Greif — 6 operation(s) for e-floating-buttons.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - e-floating-buttons
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-e-floating-buttons-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-elementor-library-api
+  name: Greif Elementor Library API
+  description: The elementor_library API from Greif — 4 operation(s) for elementor_library.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - elementor_library
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-elementor-library-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-elementor-snippet-api
+  name: Greif Elementor Snippet API
+  description: The elementor_snippet API from Greif — 2 operation(s) for elementor_snippet.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - elementor_snippet
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-elementor-snippet-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-font-collections-api
+  name: Greif Font Collections API
+  description: The font-collections API from Greif — 2 operation(s) for font-collections.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - font-collections
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-font-collections-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-font-families-api
+  name: Greif Font Families API
+  description: The font-families API from Greif — 4 operation(s) for font-families.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - font-families
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-font-families-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-global-styles-api
+  name: Greif Global Styles API
+  description: The global-styles API from Greif — 5 operation(s) for global-styles.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - global-styles
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-global-styles-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-greif-custom-table-api
+  name: Greif Greif Custom Table API
+  description: The greif_custom_table API from Greif — 2 operation(s) for greif_custom_table.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - greif_custom_table
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-greif-custom-table-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-index-api
+  name: Greif Index API
+  description: The index API from Greif — 1 operation(s) for index.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - index
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-index-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-jet-menu-api
+  name: Greif Jet Menu API
+  description: The jet-menu API from Greif — 6 operation(s) for jet-menu.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - jet-menu
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-jet-menu-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-leadership-council-api
+  name: Greif Leadership Council API
+  description: The leadership-council API from Greif — 4 operation(s) for leadership-council.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - leadership-council
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-leadership-council-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-market-api
+  name: Greif Market API
+  description: The market API from Greif — 6 operation(s) for market.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - market
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-market-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-media-api
+  name: Greif Media API
+  description: The media API from Greif — 4 operation(s) for media.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - media
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-media-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-menu-items-api
+  name: Greif Menu Items API
+  description: The menu-items API from Greif — 4 operation(s) for menu-items.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - menu-items
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-menu-items-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-menu-locations-api
+  name: Greif Menu Locations API
+  description: The menu-locations API from Greif — 2 operation(s) for menu-locations.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - menu-locations
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-menu-locations-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-menus-api
+  name: Greif Menus API
+  description: The menus API from Greif — 2 operation(s) for menus.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - menus
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-menus-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-navigation-api
+  name: Greif Navigation API
+  description: The navigation API from Greif — 6 operation(s) for navigation.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - navigation
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-navigation-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-pages-api
+  name: Greif Pages API
+  description: The pages API from Greif — 6 operation(s) for pages.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - pages
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-pages-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-pattern-directory-api
+  name: Greif Pattern Directory API
+  description: The pattern-directory API from Greif — 1 operation(s) for pattern-directory.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - pattern-directory
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-pattern-directory-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-plugins-api
+  name: Greif Plugins API
+  description: The plugins API from Greif — 2 operation(s) for plugins.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - plugins
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-plugins-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-posts-api
+  name: Greif Posts API
+  description: The posts API from Greif — 6 operation(s) for posts.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - posts
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-posts-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-product-api
+  name: Greif Product API
+  description: The product API from Greif — 6 operation(s) for product.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - product
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-product-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-product-attribute-api
+  name: Greif Product Attribute API
+  description: The product_attribute API from Greif — 2 operation(s) for product_attribute.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - product_attribute
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-product-attribute-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-product-capacity-api
+  name: Greif Product Capacity API
+  description: The product_capacity API from Greif — 2 operation(s) for product_capacity.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - product_capacity
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-product-capacity-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-product-category-api
+  name: Greif Product Category API
+  description: The product_category API from Greif — 2 operation(s) for product_category.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - product_category
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-product-category-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-product-market-api
+  name: Greif Product Market API
+  description: The product_market API from Greif — 2 operation(s) for product_market.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - product_market
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-product-market-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-product-material-api
+  name: Greif Product Material API
+  description: The product_material API from Greif — 2 operation(s) for product_material.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - product_material
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-product-material-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-product-tag-api
+  name: Greif Product Tag API
+  description: The product_tag API from Greif — 2 operation(s) for product_tag.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - product_tag
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-product-tag-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-regional-availability-api
+  name: Greif Regional Availability API
+  description: The regional_availability API from Greif — 2 operation(s) for regional_availability.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - regional_availability
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-regional-availability-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-sales-contact-api
+  name: Greif Sales Contact API
+  description: The sales-contact API from Greif — 4 operation(s) for sales-contact.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - sales-contact
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-sales-contact-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-search-api
+  name: Greif Search API
+  description: The search API from Greif — 1 operation(s) for search.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - search
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-search-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-settings-api
+  name: Greif Settings API
+  description: The settings API from Greif — 1 operation(s) for settings.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - settings
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-settings-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-sidebars-api
+  name: Greif Sidebars API
+  description: The sidebars API from Greif — 2 operation(s) for sidebars.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - sidebars
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-sidebars-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-statuses-api
+  name: Greif Statuses API
+  description: The statuses API from Greif — 2 operation(s) for statuses.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - statuses
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-statuses-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-store-location-api
+  name: Greif Store Location API
+  description: The store_location API from Greif — 2 operation(s) for store_location.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - store_location
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-store-location-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-sustainability-items-api
+  name: Greif Sustainability Items API
+  description: The sustainability_items API from Greif — 6 operation(s) for sustainability_items.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - sustainability_items
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-sustainability-items-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-tags-api
+  name: Greif Tags API
+  description: The tags API from Greif — 2 operation(s) for tags.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - tags
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-tags-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-taxonomies-api
+  name: Greif Taxonomies API
+  description: The taxonomies API from Greif — 2 operation(s) for taxonomies.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - taxonomies
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-taxonomies-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-technology-api
+  name: Greif Technology API
+  description: The technology API from Greif — 6 operation(s) for technology.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - technology
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-technology-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-template-parts-api
+  name: Greif Template Parts API
+  description: The template-parts API from Greif — 7 operation(s) for template-parts.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - template-parts
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-template-parts-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-templates-api
+  name: Greif Templates API
+  description: The templates API from Greif — 7 operation(s) for templates.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - templates
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-templates-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-themes-api
+  name: Greif Themes API
+  description: The themes API from Greif — 2 operation(s) for themes.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - themes
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-themes-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-types-api
+  name: Greif Types API
+  description: The types API from Greif — 2 operation(s) for types.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - types
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-types-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-users-api
+  name: Greif Users API
+  description: The users API from Greif — 6 operation(s) for users.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - users
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-users-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-visibility-api
+  name: Greif Visibility API
+  description: The visibility API from Greif — 2 operation(s) for visibility.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - visibility
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-visibility-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-widget-types-api
+  name: Greif Widget Types API
+  description: The widget-types API from Greif — 4 operation(s) for widget-types.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - widget-types
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-widget-types-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-widgets-api
+  name: Greif Widgets API
+  description: The widgets API from Greif — 2 operation(s) for widgets.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - widgets
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-widgets-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-wp-pattern-category-api
+  name: Greif Wp Pattern Category API
+  description: The wp_pattern_category API from Greif — 2 operation(s) for wp_pattern_category.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - wp_pattern_category
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-wp-pattern-category-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-wpsl-store-category-api
+  name: Greif Wpsl Store Category API
+  description: The wpsl_store_category API from Greif — 2 operation(s) for wpsl_store_category.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - wpsl_store_category
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-wpsl-store-category-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
+- aid: greif:greif-wpsl-stores-api
+  name: Greif Wpsl Stores API
+  description: The wpsl_stores API from Greif — 6 operation(s) for wpsl_stores.
+  humanURL: https://www.greif.com/wp-json/
+  baseURL: https://www.greif.com/wp-json
+  tags:
+  - wpsl_stores
+  properties:
+  - type: OpenAPI
+    url: openapi/greif-wpsl-stores-api-openapi.yml
+  - type: OpenAPISource
+    url: openapi/greif-wp-json-discovery.json
+  - type: x-upstream-documentation
+    url: https://developer.wordpress.org/rest-api/
 common:
+  - type: Overlay
+    url: overlays/greif-wordpress-rest-overlay.yaml
   - type: DomainSecurity
     url: security/greif-domain-security.yml
   - type: LinkedIn
