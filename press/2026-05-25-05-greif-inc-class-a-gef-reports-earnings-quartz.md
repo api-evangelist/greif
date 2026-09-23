@@ -1,7 +1,9 @@
 ---
 title: Greif Inc. Class A (GEF) reports earnings - Quartz
 url: https://qz.com/greif-inc-class-a-gef-reports-earnings-1851727534
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Greif" press release artificial intelligence'
 position: 5
 source: serpapi-google

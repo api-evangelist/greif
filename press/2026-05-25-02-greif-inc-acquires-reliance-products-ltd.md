@@ -1,7 +1,9 @@
 ---
 title: Greif Inc. Acquires Reliance Products Ltd.
 url: https://www.prnewswire.com/news-releases/greif-inc-acquires-reliance-products-ltd-301943699.html
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Greif" press release artificial intelligence'
 position: 2
 source: serpapi-google

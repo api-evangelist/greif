@@ -1,0 +1,2025 @@
+openapi: 3.2.0
+info:
+  title: Greif WordPress REST API (wp/v2) Users API
+  version: wp/v2
+  description: The WordPress REST API namespace `wp/v2` as served by Greif at https://www.greif.com/wp-json/.
+  contact:
+    name: Greif
+    url: https://www.greif.com/contact/
+  termsOfService: https://www.greif.com/terms-and-conditions/
+servers:
+- url: https://www.greif.com/wp-json
+  description: Greif corporate site WordPress REST API
+tags:
+- name: Users
+paths:
+  /wp/v2/users:
+    get:
+      operationId: getWpV2Users
+      summary: GET /wp/v2/users
+      tags:
+      - Users
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+        description: Current page of the collection.
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+        description: Maximum number of items to be returned in result set.
+      - name: search
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Limit results to those matching a string.
+      - name: exclude
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Ensure result set excludes specific IDs.
+      - name: include
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: integer
+        description: Limit result set to specific IDs.
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+        description: Offset the result set by a specific number of items.
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: asc
+        description: Order sort attribute ascending or descending.
+      - name: orderby
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - id
+          - include
+          - name
+          - registered_date
+          - slug
+          - include_slugs
+          - email
+          - url
+          default: name
+        description: Sort collection by user attribute.
+      - name: slug
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users with one or more specific slugs.
+      - name: roles
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users matching at least one specific role provided. Accepts csv list or single role.
+      - name: capabilities
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        description: Limit result set to users matching at least one specific capability provided. Accepts csv list or single capability.
+      - name: who
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - authors
+        description: Limit result set to users who are considered authors.
+      - name: has_published_posts
+        in: query
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        description: Limit result set to users who have published posts.
+      - name: search_columns
+        in: query
+        required: false
+        schema:
+          type: array
+          default: []
+          items:
+            type: string
+        description: Array of column names to be searched.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    post:
+      operationId: createWpV2Users
+      summary: POST /wp/v2/users
+      tags:
+      - Users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Login name for the user.
+                name:
+                  type: string
+                  description: Display name for the user.
+                first_name:
+                  type: string
+                  description: First name for the user.
+                last_name:
+                  type: string
+                  description: Last name for the user.
+                email:
+                  type: string
+                  description: The email address for the user.
+                url:
+                  type: string
+                  description: URL of the user.
+                description:
+                  type: string
+                  description: Description of the user.
+                locale:
+                  type: string
+                  enum:
+                  - ''
+                  - en_US
+                  - ar
+                  - da_DK
+                  - de_DE
+                  - es_ES
+                  - es_MX
+                  - fr_FR
+                  - he_IL
+                  - hu_HU
+                  - ja
+                  - nl_BE
+                  - pl_PL
+                  - pt_BR
+                  - pt_PT
+                  - ru_RU
+                  - uk
+                  - vi
+                  - zh_CN
+                  description: Locale for the user.
+                nickname:
+                  type: string
+                  description: The nickname for the user.
+                slug:
+                  type: string
+                  description: An alphanumeric identifier for the user.
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  description: Roles assigned to the user.
+                password:
+                  type: string
+                  description: Password for the user (never included).
+                meta:
+                  type: object
+                  description: Meta fields.
+                elementor_introduction:
+                  type: object
+                  description: Elementor user meta data
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2/users/{id}:
+    get:
+      operationId: getWpV2UsersById
+      summary: GET /wp/v2/users/{id}
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    post:
+      operationId: createWpV2UsersById
+      summary: POST /wp/v2/users/{id}
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Login name for the user.
+                name:
+                  type: string
+                  description: Display name for the user.
+                first_name:
+                  type: string
+                  description: First name for the user.
+                last_name:
+                  type: string
+                  description: Last name for the user.
+                email:
+                  type: string
+                  description: The email address for the user.
+                url:
+                  type: string
+                  description: URL of the user.
+                description:
+                  type: string
+                  description: Description of the user.
+                locale:
+                  type: string
+                  enum:
+                  - ''
+                  - en_US
+                  - ar
+                  - da_DK
+                  - de_DE
+                  - es_ES
+                  - es_MX
+                  - fr_FR
+                  - he_IL
+                  - hu_HU
+                  - ja
+                  - nl_BE
+                  - pl_PL
+                  - pt_BR
+                  - pt_PT
+                  - ru_RU
+                  - uk
+                  - vi
+                  - zh_CN
+                  description: Locale for the user.
+                nickname:
+                  type: string
+                  description: The nickname for the user.
+                slug:
+                  type: string
+                  description: An alphanumeric identifier for the user.
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  description: Roles assigned to the user.
+                password:
+                  type: string
+                  description: Password for the user (never included).
+                meta:
+                  type: object
+                  description: Meta fields.
+                elementor_introduction:
+                  type: object
+                  description: Elementor user meta data
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    put:
+      operationId: replaceWpV2UsersById
+      summary: PUT /wp/v2/users/{id}
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Login name for the user.
+                name:
+                  type: string
+                  description: Display name for the user.
+                first_name:
+                  type: string
+                  description: First name for the user.
+                last_name:
+                  type: string
+                  description: Last name for the user.
+                email:
+                  type: string
+                  description: The email address for the user.
+                url:
+                  type: string
+                  description: URL of the user.
+                description:
+                  type: string
+                  description: Description of the user.
+                locale:
+                  type: string
+                  enum:
+                  - ''
+                  - en_US
+                  - ar
+                  - da_DK
+                  - de_DE
+                  - es_ES
+                  - es_MX
+                  - fr_FR
+                  - he_IL
+                  - hu_HU
+                  - ja
+                  - nl_BE
+                  - pl_PL
+                  - pt_BR
+                  - pt_PT
+                  - ru_RU
+                  - uk
+                  - vi
+                  - zh_CN
+                  description: Locale for the user.
+                nickname:
+                  type: string
+                  description: The nickname for the user.
+                slug:
+                  type: string
+                  description: An alphanumeric identifier for the user.
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  description: Roles assigned to the user.
+                password:
+                  type: string
+                  description: Password for the user (never included).
+                meta:
+                  type: object
+                  description: Meta fields.
+                elementor_introduction:
+                  type: object
+                  description: Elementor user meta data
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    patch:
+      operationId: updateWpV2UsersById
+      summary: PATCH /wp/v2/users/{id}
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Login name for the user.
+                name:
+                  type: string
+                  description: Display name for the user.
+                first_name:
+                  type: string
+                  description: First name for the user.
+                last_name:
+                  type: string
+                  description: Last name for the user.
+                email:
+                  type: string
+                  description: The email address for the user.
+                url:
+                  type: string
+                  description: URL of the user.
+                description:
+                  type: string
+                  description: Description of the user.
+                locale:
+                  type: string
+                  enum:
+                  - ''
+                  - en_US
+                  - ar
+                  - da_DK
+                  - de_DE
+                  - es_ES
+                  - es_MX
+                  - fr_FR
+                  - he_IL
+                  - hu_HU
+                  - ja
+                  - nl_BE
+                  - pl_PL
+                  - pt_BR
+                  - pt_PT
+                  - ru_RU
+                  - uk
+                  - vi
+                  - zh_CN
+                  description: Locale for the user.
+                nickname:
+                  type: string
+                  description: The nickname for the user.
+                slug:
+                  type: string
+                  description: An alphanumeric identifier for the user.
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  description: Roles assigned to the user.
+                password:
+                  type: string
+                  description: Password for the user (never included).
+                meta:
+                  type: object
+                  description: Meta fields.
+                elementor_introduction:
+                  type: object
+                  description: Elementor user meta data
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    delete:
+      operationId: deleteWpV2UsersById
+      summary: DELETE /wp/v2/users/{id}
+      tags:
+      - Users
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: force
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Required to be true, as users do not support trashing.
+      - name: reassign
+        in: query
+        required: true
+        schema:
+          type: integer
+        description: Reassign the deleted user's posts and links to this user ID.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2/users/{user_id}/application-passwords:
+    get:
+      operationId: getWpV2UsersByUserIdApplicationPasswords
+      summary: GET /wp/v2/users/{user_id}/application-passwords
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    post:
+      operationId: createWpV2UsersByUserIdApplicationPasswords
+      summary: POST /wp/v2/users/{user_id}/application-passwords
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app_id:
+                  type: string
+                  description: A UUID provided by the application to uniquely identify it. It is recommended to use an UUID v5 with the URL or DNS namespace.
+                name:
+                  type: string
+                  description: The name of the application password.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    delete:
+      operationId: deleteWpV2UsersByUserIdApplicationPasswords
+      summary: DELETE /wp/v2/users/{user_id}/application-passwords
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2/users/{user_id}/application-passwords/{uuid}:
+    get:
+      operationId: getWpV2UsersByUserIdApplicationPasswordsByUuid
+      summary: GET /wp/v2/users/{user_id}/application-passwords/{uuid}
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    post:
+      operationId: createWpV2UsersByUserIdApplicationPasswordsByUuid
+      summary: POST /wp/v2/users/{user_id}/application-passwords/{uuid}
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app_id:
+                  type: string
+                  description: A UUID provided by the application to uniquely identify it. It is recommended to use an UUID v5 with the URL or DNS namespace.
+                name:
+                  type: string
+                  description: The name of the application password.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    put:
+      operationId: replaceWpV2UsersByUserIdApplicationPasswordsByUuid
+      summary: PUT /wp/v2/users/{user_id}/application-passwords/{uuid}
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app_id:
+                  type: string
+                  description: A UUID provided by the application to uniquely identify it. It is recommended to use an UUID v5 with the URL or DNS namespace.
+                name:
+                  type: string
+                  description: The name of the application password.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    patch:
+      operationId: updateWpV2UsersByUserIdApplicationPasswordsByUuid
+      summary: PATCH /wp/v2/users/{user_id}/application-passwords/{uuid}
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app_id:
+                  type: string
+                  description: A UUID provided by the application to uniquely identify it. It is recommended to use an UUID v5 with the URL or DNS namespace.
+                name:
+                  type: string
+                  description: The name of the application password.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    delete:
+      operationId: deleteWpV2UsersByUserIdApplicationPasswordsByUuid
+      summary: DELETE /wp/v2/users/{user_id}/application-passwords/{uuid}
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: uuid
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2/users/{user_id}/application-passwords/introspect:
+    get:
+      operationId: getWpV2UsersByUserIdApplicationPasswordsIntrospect
+      summary: GET /wp/v2/users/{user_id}/application-passwords/introspect
+      tags:
+      - Users
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+  /wp/v2/users/me:
+    get:
+      operationId: getWpV2UsersMe
+      summary: GET /wp/v2/users/me
+      tags:
+      - Users
+      parameters:
+      - name: context
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - view
+          - embed
+          - edit
+          default: view
+        description: Scope under which the request is made; determines fields present in response.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    post:
+      operationId: createWpV2UsersMe
+      summary: POST /wp/v2/users/me
+      tags:
+      - Users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Login name for the user.
+                name:
+                  type: string
+                  description: Display name for the user.
+                first_name:
+                  type: string
+                  description: First name for the user.
+                last_name:
+                  type: string
+                  description: Last name for the user.
+                email:
+                  type: string
+                  description: The email address for the user.
+                url:
+                  type: string
+                  description: URL of the user.
+                description:
+                  type: string
+                  description: Description of the user.
+                locale:
+                  type: string
+                  enum:
+                  - ''
+                  - en_US
+                  - ar
+                  - da_DK
+                  - de_DE
+                  - es_ES
+                  - es_MX
+                  - fr_FR
+                  - he_IL
+                  - hu_HU
+                  - ja
+                  - nl_BE
+                  - pl_PL
+                  - pt_BR
+                  - pt_PT
+                  - ru_RU
+                  - uk
+                  - vi
+                  - zh_CN
+                  description: Locale for the user.
+                nickname:
+                  type: string
+                  description: The nickname for the user.
+                slug:
+                  type: string
+                  description: An alphanumeric identifier for the user.
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  description: Roles assigned to the user.
+                password:
+                  type: string
+                  description: Password for the user (never included).
+                meta:
+                  type: object
+                  description: Meta fields.
+                elementor_introduction:
+                  type: object
+                  description: Elementor user meta data
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    put:
+      operationId: replaceWpV2UsersMe
+      summary: PUT /wp/v2/users/me
+      tags:
+      - Users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Login name for the user.
+                name:
+                  type: string
+                  description: Display name for the user.
+                first_name:
+                  type: string
+                  description: First name for the user.
+                last_name:
+                  type: string
+                  description: Last name for the user.
+                email:
+                  type: string
+                  description: The email address for the user.
+                url:
+                  type: string
+                  description: URL of the user.
+                description:
+                  type: string
+                  description: Description of the user.
+                locale:
+                  type: string
+                  enum:
+                  - ''
+                  - en_US
+                  - ar
+                  - da_DK
+                  - de_DE
+                  - es_ES
+                  - es_MX
+                  - fr_FR
+                  - he_IL
+                  - hu_HU
+                  - ja
+                  - nl_BE
+                  - pl_PL
+                  - pt_BR
+                  - pt_PT
+                  - ru_RU
+                  - uk
+                  - vi
+                  - zh_CN
+                  description: Locale for the user.
+                nickname:
+                  type: string
+                  description: The nickname for the user.
+                slug:
+                  type: string
+                  description: An alphanumeric identifier for the user.
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  description: Roles assigned to the user.
+                password:
+                  type: string
+                  description: Password for the user (never included).
+                meta:
+                  type: object
+                  description: Meta fields.
+                elementor_introduction:
+                  type: object
+                  description: Elementor user meta data
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    patch:
+      operationId: updateWpV2UsersMe
+      summary: PATCH /wp/v2/users/me
+      tags:
+      - Users
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: Login name for the user.
+                name:
+                  type: string
+                  description: Display name for the user.
+                first_name:
+                  type: string
+                  description: First name for the user.
+                last_name:
+                  type: string
+                  description: Last name for the user.
+                email:
+                  type: string
+                  description: The email address for the user.
+                url:
+                  type: string
+                  description: URL of the user.
+                description:
+                  type: string
+                  description: Description of the user.
+                locale:
+                  type: string
+                  enum:
+                  - ''
+                  - en_US
+                  - ar
+                  - da_DK
+                  - de_DE
+                  - es_ES
+                  - es_MX
+                  - fr_FR
+                  - he_IL
+                  - hu_HU
+                  - ja
+                  - nl_BE
+                  - pl_PL
+                  - pt_BR
+                  - pt_PT
+                  - ru_RU
+                  - uk
+                  - vi
+                  - zh_CN
+                  description: Locale for the user.
+                nickname:
+                  type: string
+                  description: The nickname for the user.
+                slug:
+                  type: string
+                  description: An alphanumeric identifier for the user.
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  description: Roles assigned to the user.
+                password:
+                  type: string
+                  description: Password for the user (never included).
+                meta:
+                  type: object
+                  description: Meta fields.
+                elementor_introduction:
+                  type: object
+                  description: Elementor user meta data
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    delete:
+      operationId: deleteWpV2UsersMe
+      summary: DELETE /wp/v2/users/me
+      tags:
+      - Users
+      parameters:
+      - name: force
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        description: Required to be true, as users do not support trashing.
+      - name: reassign
+        in: query
+        required: true
+        schema:
+          type: integer
+        description: Reassign the deleted user's posts and links to this user ID.
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+components:
+  schemas:
+    WPError:
+      type: object
+      description: The WordPress REST error envelope, observed verbatim on https://www.greif.com/wp-json/wp/v2/settings (HTTP 401, 2026-09-12). Not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_forbidden
+        message:
+          type: string
+          examples:
+          - Sorry, you are not allowed to do that.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 401
+      required:
+      - code
+      - message
+      - data
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WordPress application passwords, advertised by the site's own discovery document at https://www.greif.com/wp-json/ (authentication.application-passwords.endpoints.authorization = https://www.greif.com/wp-admin/authorize-application.php). Issued only to WordPress user accounts on the Greif site; not available to third parties.
+    cookieNonce:
+      type: apiKey
+      in: header
+      name: X-WP-Nonce
+      description: WordPress logged-in cookie plus an X-WP-Nonce header — the in-browser authentication path for the site's own editors.
+externalDocs:
+  description: Upstream WordPress REST API handbook (not authored by Greif)
+  url: https://developer.wordpress.org/rest-api/
+x-generated-from: https://www.greif.com/wp-json/ (WordPress REST route-discovery document, HTTP 200, 2026-09-12)
+x-generated-by: API Evangelist enrichment pipeline — mechanical transform of the provider-served route index; no hand-authored operations

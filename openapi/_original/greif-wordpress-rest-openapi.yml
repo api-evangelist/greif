@@ -1,3 +1,5 @@
+# x-archived-from: greif-wordpress-rest-openapi.yml
+# x-archived-on: 2026-09-16
 # Derived by the API Evangelist enrichment pipeline from Greif's own WordPress REST
 # route-discovery document (https://www.greif.com/wp-json/, HTTP 200, 2026-09-12).
 # Nothing in this file was invented: every path, method, parameter, default and enum

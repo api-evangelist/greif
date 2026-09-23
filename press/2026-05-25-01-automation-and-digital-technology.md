@@ -1,7 +1,9 @@
 ---
 title: Automation & Digital Technology
 url: https://www.greif.com/sustainability-2024/sustainability-strategies/addressing-risk/automation-digital-technology/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Greif" press release artificial intelligence'
 position: 1
 source: serpapi-google

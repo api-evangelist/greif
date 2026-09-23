@@ -1,0 +1,546 @@
+openapi: 3.2.0
+info:
+  title: Greif WordPress REST API (wp/v2) Settings API
+  version: wp/v2
+  description: The WordPress REST API namespace `wp/v2` as served by Greif at https://www.greif.com/wp-json/.
+  contact:
+    name: Greif
+    url: https://www.greif.com/contact/
+  termsOfService: https://www.greif.com/terms-and-conditions/
+servers:
+- url: https://www.greif.com/wp-json
+  description: Greif corporate site WordPress REST API
+tags:
+- name: Settings
+paths:
+  /wp/v2/settings:
+    get:
+      operationId: getWpV2Settings
+      summary: GET /wp/v2/settings
+      tags:
+      - Settings
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    post:
+      operationId: createWpV2Settings
+      summary: POST /wp/v2/settings
+      tags:
+      - Settings
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hello_elementor_settings_description_meta_tag:
+                  type: string
+                hello_elementor_settings_skip_link:
+                  type: string
+                hello_elementor_settings_header_footer:
+                  type: string
+                hello_elementor_settings_page_title:
+                  type: string
+                hello_elementor_settings_hello_style:
+                  type: string
+                hello_elementor_settings_hello_theme:
+                  type: string
+                title:
+                  type: string
+                  description: Site title.
+                description:
+                  type: string
+                  description: Site tagline.
+                url:
+                  type: string
+                  description: Site URL.
+                email:
+                  type: string
+                  description: This address is used for admin purposes, like new user notification.
+                timezone:
+                  type: string
+                  description: A city in the same timezone as you.
+                date_format:
+                  type: string
+                  description: A date format for all date strings.
+                time_format:
+                  type: string
+                  description: A time format for all time strings.
+                start_of_week:
+                  type: integer
+                  description: A day number of the week that the week should start on.
+                language:
+                  type: string
+                  description: WordPress locale code.
+                use_smilies:
+                  type: boolean
+                  description: Convert emoticons like :-) and :-P to graphics on display.
+                default_category:
+                  type: integer
+                  description: Default post category.
+                default_post_format:
+                  type: string
+                  description: Default post format.
+                posts_per_page:
+                  type: integer
+                  description: Blog pages show at most.
+                show_on_front:
+                  type: string
+                  description: What to show on the front page
+                page_on_front:
+                  type: integer
+                  description: The ID of the page that should be displayed on the front page
+                page_for_posts:
+                  type: integer
+                  description: The ID of the page that should display the latest posts
+                default_ping_status:
+                  type: string
+                  enum:
+                  - open
+                  - closed
+                  description: Allow link notifications from other blogs (pingbacks and trackbacks) on new articles.
+                default_comment_status:
+                  type: string
+                  enum:
+                  - open
+                  - closed
+                  description: Allow people to submit comments on new posts.
+                site_logo:
+                  type: integer
+                  description: Site logo.
+                site_icon:
+                  type: integer
+                  description: Site icon.
+                elementor_one_welcome_screen_completed:
+                  type: boolean
+                  description: Elementor One Welcome Screen Completed
+                elementor_one_dismiss_connect_alert:
+                  type: boolean
+                  description: Elementor One Dismiss Connect Alert
+                elementor_one_dismiss_elementor_one_subscription_alert:
+                  type: boolean
+                  description: Elementor One Dismiss Elementor One Subscription Alert
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    put:
+      operationId: replaceWpV2Settings
+      summary: PUT /wp/v2/settings
+      tags:
+      - Settings
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hello_elementor_settings_description_meta_tag:
+                  type: string
+                hello_elementor_settings_skip_link:
+                  type: string
+                hello_elementor_settings_header_footer:
+                  type: string
+                hello_elementor_settings_page_title:
+                  type: string
+                hello_elementor_settings_hello_style:
+                  type: string
+                hello_elementor_settings_hello_theme:
+                  type: string
+                title:
+                  type: string
+                  description: Site title.
+                description:
+                  type: string
+                  description: Site tagline.
+                url:
+                  type: string
+                  description: Site URL.
+                email:
+                  type: string
+                  description: This address is used for admin purposes, like new user notification.
+                timezone:
+                  type: string
+                  description: A city in the same timezone as you.
+                date_format:
+                  type: string
+                  description: A date format for all date strings.
+                time_format:
+                  type: string
+                  description: A time format for all time strings.
+                start_of_week:
+                  type: integer
+                  description: A day number of the week that the week should start on.
+                language:
+                  type: string
+                  description: WordPress locale code.
+                use_smilies:
+                  type: boolean
+                  description: Convert emoticons like :-) and :-P to graphics on display.
+                default_category:
+                  type: integer
+                  description: Default post category.
+                default_post_format:
+                  type: string
+                  description: Default post format.
+                posts_per_page:
+                  type: integer
+                  description: Blog pages show at most.
+                show_on_front:
+                  type: string
+                  description: What to show on the front page
+                page_on_front:
+                  type: integer
+                  description: The ID of the page that should be displayed on the front page
+                page_for_posts:
+                  type: integer
+                  description: The ID of the page that should display the latest posts
+                default_ping_status:
+                  type: string
+                  enum:
+                  - open
+                  - closed
+                  description: Allow link notifications from other blogs (pingbacks and trackbacks) on new articles.
+                default_comment_status:
+                  type: string
+                  enum:
+                  - open
+                  - closed
+                  description: Allow people to submit comments on new posts.
+                site_logo:
+                  type: integer
+                  description: Site logo.
+                site_icon:
+                  type: integer
+                  description: Site icon.
+                elementor_one_welcome_screen_completed:
+                  type: boolean
+                  description: Elementor One Welcome Screen Completed
+                elementor_one_dismiss_connect_alert:
+                  type: boolean
+                  description: Elementor One Dismiss Connect Alert
+                elementor_one_dismiss_elementor_one_subscription_alert:
+                  type: boolean
+                  description: Elementor One Dismiss Elementor One Subscription Alert
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+    patch:
+      operationId: updateWpV2Settings
+      summary: PATCH /wp/v2/settings
+      tags:
+      - Settings
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hello_elementor_settings_description_meta_tag:
+                  type: string
+                hello_elementor_settings_skip_link:
+                  type: string
+                hello_elementor_settings_header_footer:
+                  type: string
+                hello_elementor_settings_page_title:
+                  type: string
+                hello_elementor_settings_hello_style:
+                  type: string
+                hello_elementor_settings_hello_theme:
+                  type: string
+                title:
+                  type: string
+                  description: Site title.
+                description:
+                  type: string
+                  description: Site tagline.
+                url:
+                  type: string
+                  description: Site URL.
+                email:
+                  type: string
+                  description: This address is used for admin purposes, like new user notification.
+                timezone:
+                  type: string
+                  description: A city in the same timezone as you.
+                date_format:
+                  type: string
+                  description: A date format for all date strings.
+                time_format:
+                  type: string
+                  description: A time format for all time strings.
+                start_of_week:
+                  type: integer
+                  description: A day number of the week that the week should start on.
+                language:
+                  type: string
+                  description: WordPress locale code.
+                use_smilies:
+                  type: boolean
+                  description: Convert emoticons like :-) and :-P to graphics on display.
+                default_category:
+                  type: integer
+                  description: Default post category.
+                default_post_format:
+                  type: string
+                  description: Default post format.
+                posts_per_page:
+                  type: integer
+                  description: Blog pages show at most.
+                show_on_front:
+                  type: string
+                  description: What to show on the front page
+                page_on_front:
+                  type: integer
+                  description: The ID of the page that should be displayed on the front page
+                page_for_posts:
+                  type: integer
+                  description: The ID of the page that should display the latest posts
+                default_ping_status:
+                  type: string
+                  enum:
+                  - open
+                  - closed
+                  description: Allow link notifications from other blogs (pingbacks and trackbacks) on new articles.
+                default_comment_status:
+                  type: string
+                  enum:
+                  - open
+                  - closed
+                  description: Allow people to submit comments on new posts.
+                site_logo:
+                  type: integer
+                  description: Site logo.
+                site_icon:
+                  type: integer
+                  description: Site icon.
+                elementor_one_welcome_screen_completed:
+                  type: boolean
+                  description: Elementor One Welcome Screen Completed
+                elementor_one_dismiss_connect_alert:
+                  type: boolean
+                  description: Elementor One Dismiss Connect Alert
+                elementor_one_dismiss_elementor_one_subscription_alert:
+                  type: boolean
+                  description: Elementor One Dismiss Elementor One Subscription Alert
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-WP-Total:
+              description: Total number of matching records (collection routes)
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              description: Total number of pages (collection routes)
+              schema:
+                type: integer
+            Link:
+              description: RFC 8288 pagination links (rel=next / rel=prev)
+              schema:
+                type: string
+            X-Robots-Tag:
+              description: noindex — observed on every wp/v2 response from www.greif.com
+              schema:
+                type: string
+          content:
+            application/json:
+              schema: {}
+        '400':
+          description: rest_invalid_param — a parameter failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '401':
+          description: rest_forbidden / rest_cannot_access — authentication required for this route
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '403':
+          description: rest_forbidden / rest_cannot_* — authenticated but not permitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+        '404':
+          description: rest_no_route / rest_post_invalid_id — route or resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WPError'
+components:
+  schemas:
+    WPError:
+      type: object
+      description: The WordPress REST error envelope, observed verbatim on https://www.greif.com/wp-json/wp/v2/settings (HTTP 401, 2026-09-12). Not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+          examples:
+          - rest_forbidden
+        message:
+          type: string
+          examples:
+          - Sorry, you are not allowed to do that.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              examples:
+              - 401
+      required:
+      - code
+      - message
+      - data
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: WordPress application passwords, advertised by the site's own discovery document at https://www.greif.com/wp-json/ (authentication.application-passwords.endpoints.authorization = https://www.greif.com/wp-admin/authorize-application.php). Issued only to WordPress user accounts on the Greif site; not available to third parties.
+    cookieNonce:
+      type: apiKey
+      in: header
+      name: X-WP-Nonce
+      description: WordPress logged-in cookie plus an X-WP-Nonce header — the in-browser authentication path for the site's own editors.
+externalDocs:
+  description: Upstream WordPress REST API handbook (not authored by Greif)
+  url: https://developer.wordpress.org/rest-api/
+x-generated-from: https://www.greif.com/wp-json/ (WordPress REST route-discovery document, HTTP 200, 2026-09-12)
+x-generated-by: API Evangelist enrichment pipeline — mechanical transform of the provider-served route index; no hand-authored operations
