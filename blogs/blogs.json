@@ -9,6 +9,13 @@
       "method": "discovered"
     },
     {
+      "source": "https://www.greif.com/feed/",
+      "feed_url": "https://www.greif.com/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://www.greif.com/category/blog/feed/",
       "feed_url": "https://www.greif.com/category/blog/feed/",
       "title": "",
@@ -16,6 +23,6 @@
       "method": "feed"
     }
   ],
-  "post_count": 25,
-  "fetched": "2026-10-03T12:30:02Z"
+  "post_count": 26,
+  "fetched": "2026-10-10T13:15:00Z"
 }
