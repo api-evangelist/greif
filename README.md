@@ -1,4 +1,4 @@
-# Greif (greif)
+# Greif
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,33 +66,104 @@
 
 Greif is an industrial packaging products and services leader with a vision to be the best performing customer service company in the world. Greif also offers digital tools such as the Greif Green Tool carbon footprint calculator and the Greif+ online platform for customers.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/greif/refs/heads/main/apis.yml)
+**Areas:** Packaging · Industrial · Manufacturing · Sustainability · Fortune 1000
 
-## Scope
+## Greif on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for Greif is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/greif/](https://apis.io/providers/greif/)** — or go straight to one of the APIs or properties below.
 
-## Tags:
+### APIs (1)
 
- - Packaging, Industrial, Manufacturing, Sustainability
+- [Greif Website (WordPress REST)](https://apis.io/apis/greif/greif-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Greif website at www.greif.com: the route index of the site's content management system, catalogued as one…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-24
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-No public APIs have been documented. Greif offers customer-facing digital tools (Greif Green Tool, Greif+) but does not publish a developer portal at this time.
+Model Context Protocol servers that expose the API to agents.
 
-## Common Properties
+- [Greif MCP Candidate Tool List](https://apis.io/servers/greif/greif-mcp-candidate-tool-list/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Greif Authentication](https://apis.io/security/greif/greif-authentication/)
+- [Greif Domain Security](https://apis.io/security/greif/greif-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Greif Plans Pricing](https://apis.io/plans/greif/greif-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Greif Rate Limits](https://apis.io/rate-limits/greif/greif-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.greif.com)
+- [Support](https://www.greif.com/contact/)
+- [Blog](https://www.greif.com/category/blog/)
+- [Terms of service](https://www.greif.com/terms-and-conditions/)
+- [Privacy policy](https://www.greif.com/privacy-policy/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 23.3** — emerging · rubric 0.24.0 · scored 2026-10-17
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 24.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 30.4 |
+| Access clarity | 21.1 |
+
+**Agent readiness 24.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/greif/](https://apis.io/providers/greif/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Greif: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/greif/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
